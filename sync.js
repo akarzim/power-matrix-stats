@@ -1,37 +1,14 @@
 // requires
 var fs = require('fs');
 var utils = require('utils');
-
-// initialize casper
-var casper = require('casper').create({
-    verbose: true,
-    // waitTimeout: 50000,
-    // logLevel: 'debug',
-    userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/28.0.1500.71 Chrome/28.0.1500.71 Safari/537.36',
-    viewportSize: {width: 1600, height: 900},
-    pageSettings: {
-        loadImages:  false,         // The WebPage instance used by Casper will
-        loadPlugins: false,         // use these settings
-    }
-});
+var Casper = require('casper');
 
 // variables
 var url = 'http://www.powermatrixgame.com';
 
-
-// print out all the messages in the headless browser context
-casper.on('remote.message', function(msg) {
-    this.echo(msg);
-});
-
-// print out all the messages in the headless browser context
-casper.on('page.error', function(msg, trace) {
-    this.echo('Page Error: ' + msg, 'ERROR');
-});
-
-
+// functions
 function login() {
-    console.log('login');
+    this.echo('login');
     this.fillSelectors('form#toplogin', { '#e_mail': 'Doctor', '#password': 'whoami' });
 
     return this.thenClick('input[name="submit_login"]', function() {
@@ -40,15 +17,15 @@ function login() {
 }
 
 function waitForLoading() {
-    console.log('wait for loading…');
+    this.echo('wait for loading…');
     return this.waitWhileSelector('#app_loading_screen', function() {
-        console.log("app loaded");
+        this.echo("app loaded");
         return displayHighscore.call(this);
     }, null, 50000);
 }
 
 function displayHighscore() {
-    console.log('display highscore');
+    this.echo('display highscore');
     return this.thenClick('a#highscore_info', function() {
         return this.waitUntilVisible('div#highscore_info a.page.first', function() {
             return goToFirstPage.call(this);
@@ -57,7 +34,7 @@ function displayHighscore() {
 }
 
 function goToFirstPage() {
-    console.log('go to first page');
+    this.echo('go to first page');
     return this.thenClick('div#highscore_info a.page.first', function() {
         return parseProfiles.call(this);
     });
@@ -65,7 +42,7 @@ function goToFirstPage() {
 }
 
 function parseProfiles() {
-    console.log('parse profiles');
+    this.echo('parse profiles');
     return this.then(function() {
         this.evaluate(function() {
             var world_id,
@@ -102,6 +79,30 @@ function process() {
     login.call(this);
 }
 
+
+
+
+// initialize casper
+var casper = Casper.create({
+    verbose: true,
+    // waitTimeout: 50000,
+    // logLevel: 'debug',
+    userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/28.0.1500.71 Chrome/28.0.1500.71 Safari/537.36',
+    viewportSize: {width: 1600, height: 900},
+    pageSettings: {
+        loadImages:  false,         // The WebPage instance used by Casper will
+        loadPlugins: false,         // use these settings
+    }
+});
+
+casper.on('remote.message', function(msg) {
+    this.echo(msg);
+});
+
+casper.on('page.error', function(msg, trace) {
+    this.echo('Page Error: ' + msg, 'ERROR');
+});
+
 casper.start(url, function() {
     this.echo("Starting");
 })
@@ -110,15 +111,6 @@ casper.then(process);
 
 casper.run();
 
-
-
-// casper.then(function() {
-
-//     // console.log(profile_link.user);
-//     // this.thenClick('a[user=' + profile_link.user + ']', function() {
-//     //     console.log(this.getHTML('h1#user_name'));
-//     // });
-// });
 
 
 // var wsurl = url + '/my/last_updated'
@@ -139,5 +131,3 @@ casper.run();
 //     }
 //     this.echo('got data ' + utils.serialize(data));
 // });
-
-casper.run();
