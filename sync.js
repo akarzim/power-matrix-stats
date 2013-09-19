@@ -94,30 +94,14 @@ casper.on('page.error', function(msg, trace) {
 });
 
 casper.start(url, function() {
-    this.echo("Starting");
-})
+    this.echo('Starting');
+});
 
 casper.then(process);
 
+casper.then(function() {
+    this.echo("That's all for today !");
+    this.echo('Coffee version is much more complete ! Feel free to use it ;)');
+});
+
 casper.run();
-
-
-
-// var wsurl = url + '/my/last_updated'
-// var data;
-
-// casper.then(function() {
-//     data = this.evaluate(function(wsurl) {
-//         try {
-//             return JSON.parse(__utils__.sendAJAX(wsurl, 'POST', null, false));
-//         } catch (e) {
-//         }
-//     }, {wsurl: wsurl});
-// });
-
-// casper.then(function() {
-//     if (!data) {
-//         this.die('unable to retrieve data');
-//     }
-//     this.echo('got data ' + utils.serialize(data));
-// });
