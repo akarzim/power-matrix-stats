@@ -11,33 +11,23 @@ function login() {
     this.echo('login');
     this.fillSelectors('form#toplogin', { '#e_mail': 'Doctor', '#password': 'whoami' });
 
-    return this.thenClick('input[name="submit_login"]', function() {
-        return waitForLoading.call(this)
-    });
+    return this.thenClick('input[name="submit_login"]', waitForLoading);
 }
 
 function waitForLoading() {
     this.echo('wait for loading…');
-    return this.waitWhileSelector('#app_loading_screen', function() {
-        this.echo("app loaded");
-        return displayHighscore.call(this);
-    }, null, 50000);
+    return this.waitWhileSelector('#app_loading_screen', displayHighscore, null, 50000);
 }
 
 function displayHighscore() {
     this.echo('display highscore');
-    return this.thenClick('a#highscore_info', function() {
-        return this.waitUntilVisible('div#highscore_info a.page.first', function() {
-            return goToFirstPage.call(this);
-        });
-    });
+    this.thenClick('a#highscore_info');
+    return this.waitUntilVisible('div#highscore_info a.page.first', goToFirstPage);
 }
 
 function goToFirstPage() {
     this.echo('go to first page');
-    return this.thenClick('div#highscore_info a.page.first', function() {
-        return parseProfiles.call(this);
-    });
+    return this.thenClick('div#highscore_info a.page.first', parseProfiles);
 
 }
 

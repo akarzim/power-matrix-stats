@@ -13,26 +13,20 @@ login = ->
     '#e_mail': 'Doctor'
     '#password': 'whoami'
 
-  @thenClick 'input[name="submit_login"]', ->
-    waitForLoading.call this
+  @thenClick 'input[name="submit_login"]', waitForLoading
 
 waitForLoading = ->
   @echo 'wait for loading…'
-  @waitWhileSelector '#app_loading_screen', (->
-    @echo 'app loaded'
-    displayHighscore.call this
-  ), null, 50000
+  @waitWhileSelector '#app_loading_screen', displayHighscore, null, 50000
 
 displayHighscore = ->
   @echo 'display highscore'
   @thenClick 'a#highscore_info', ->
-    @waitUntilVisible 'div#highscore_info a.page.first', ->
-      goToFirstPage.call this
+    @waitUntilVisible 'div#highscore_info a.page.first', goToFirstPage
 
 goToFirstPage = ->
   @echo 'go to first page'
-  @thenClick 'div#highscore_info a.page.first', ->
-    parseProfiles.call this
+  @thenClick 'div#highscore_info a.page.first', parseProfiles
 
 parseProfiles = ->
   @echo 'parse profiles'
