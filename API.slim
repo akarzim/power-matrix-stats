@@ -1,0 +1,69 @@
+doctype html
+html
+  head
+    title PowerMatrixGame API
+
+  body
+    h1 People
+
+    h2 Profile
+
+    dl
+      dt URL
+      dd their/get_profile
+
+      dt VERB
+      dd POST
+
+      dt DATA
+      dd
+        dl
+          dt world_id
+          dd number
+
+          dt token
+          dd string
+
+    h1 World
+
+    h2 Achivement List
+
+    dl
+      dt URL
+      dd worldachievement/list_all
+
+      dt VERB
+      dd POST
+
+      dt DATA
+      dd
+        dl
+          dt world_id
+          dd number
+
+          dt token
+          dd string
+
+    h1 Syndicate Account
+
+    h2 Get Network Development Donations
+
+    dl
+      dt URL
+      dd syndicateaccount/get_donations
+
+      dt VERB
+      dd POST
+
+      dt DATA
+      dd
+        dl
+          dt tech_tree
+          dd syndicate-(satisfcation|population|finance|development)
+
+          dt level
+          dd 1..10
+
+          dt page
+          dd 1..*
+
